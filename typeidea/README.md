@@ -1,0 +1,1 @@
+# This is a  web project  with the frame of Django.
