@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
-from common.constant import *
+from typeidea.typeidea.common.constant import *
+
 
 # Create your models here.
 class Link(models.Model):
@@ -16,6 +17,7 @@ class Link(models.Model):
 
     class Meta:
         verbose_name = verbose_name_plural = "友链"
+
 
 class SideBar(models.Model):
     title = models.CharField(max_length=50, verbose_name="标题")

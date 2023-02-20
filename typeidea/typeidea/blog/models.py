@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
-from common.constant import *
+from typeidea.typeidea.common.constant import *
+
 
 # Create your models here.
 class Category(models.Model):
@@ -17,6 +18,7 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+
 class Tag(models.Model):
     name = models.CharField(max_length=10, verbose_name="名称")
     status = models.PositiveIntegerField(default=STATUS_NORMAL,
@@ -29,6 +31,7 @@ class Tag(models.Model):
 
     def __str__(self):
         return self.name
+
 
 class Post(models.Model):
     title = models.CharField(max_length=255, verbose_name= "标题")
