@@ -1,6 +1,7 @@
 from django.db import models
 from blog.models import Post
-from common.constant import *
+from typeidea.typeidea.common.constant import *
+
 
 # Create your models here.
 class Comment(models.Model):

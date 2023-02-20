@@ -1,3 +1,4 @@
+from django.contrib.admin.models import LogEntry
 from django.contrib import admin
 from django.urls import reverse
 from django.utils.html import format_html
@@ -7,11 +8,13 @@ from .adminforms import PostAdminForm
 from typeideabase.custom_site import custom_site
 from typeideabase.base_admin import BaseOwnerAdmin
 
+
 # Register your models here.
 class PostInline(admin.TabularInline):
     fields = ('title', 'desc')
     extra = 1
     model = Post
+
 
 @admin.register(Category, site=custom_site)
 class CategoryAdmin(BaseOwnerAdmin):
@@ -24,10 +27,12 @@ class CategoryAdmin(BaseOwnerAdmin):
 
     post_count.short_description = '文章数量'
 
+
 @admin.register(Tag, site=custom_site)
 class TagAdmin(BaseOwnerAdmin):
     list_display = ('name', 'status', 'owner', 'create_time')
     fields = ('name', 'status')
+
 
 # define the filer show only you
 class CategoryOwnerFilter(admin.SimpleListFilter):
@@ -42,6 +47,7 @@ class CategoryOwnerFilter(admin.SimpleListFilter):
         if category_id:
             return queryset.filter(category_id=category_id)
         return queryset
+
 
 @admin.register(Post, site=custom_site)
 class PostAdmin(BaseOwnerAdmin):
@@ -89,6 +95,7 @@ class PostAdmin(BaseOwnerAdmin):
     )
 
     filter_horizontal = ('tag',)
+
     # filter_vertical = ('tag', )
 
     def operator(self, obj):
@@ -96,6 +103,7 @@ class PostAdmin(BaseOwnerAdmin):
             '<a href="{}">编辑</a>',
             reverse('cus_admin:blog_post_change', args=(obj.id,))
         )
+
     operator.short_description = '操作'
 
     # def get_app_list(self, request):
@@ -119,8 +127,11 @@ class PostAdmin(BaseOwnerAdmin):
 
     class Media:
         css = {
-            'all': ("https://cdn.bootcss.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css", ),
+            'all': ("https://cdn.bootcss.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css",),
         }
-        js =('https://cdn.bootcss.com/bootstrap/4.0.0-beta.2/js/bootstrap.bundle.js', )
+        js = ('https://cdn.bootcss.com/bootstrap/4.0.0-beta.2/js/bootstrap.bundle.js',)
 
 
+@admin.register(LogEntry, site=custom_site)
+class LogEntryAdmin(admin.ModelAdmin):
+    list_display = ['object_repr', 'object_id', 'action_flag', 'user', 'change_message', 'action_time']
