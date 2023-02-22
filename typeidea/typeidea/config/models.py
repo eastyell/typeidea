@@ -1,3 +1,4 @@
+from django.template.loader import render_to_string
 from django.contrib.auth.models import User
 from django.db import models
 from typeidea.typeidea.common.constant import *
@@ -32,3 +33,31 @@ class SideBar(models.Model):
 
     class Meta:
         verbose_name = verbose_name_plural = "侧边栏"
+
+    @classmethod
+    def get_all(cls):
+        return cls.objects.filter(status=STATUS_SHOW)
+
+    @property
+    def content_html(self):
+        from blog.models import Post
+        from comment.models import Comment
+        result = ''
+        if self.display_type == DISPLAY_HTML:
+            result = self.content
+        elif self.display_type == DISPLAY_LATEST:
+            context = {
+                'posts': Post.latest_posts()
+            }
+            result = render_to_string('config/blocks/sidebar_posts.html', context)
+        elif self.display_type == self.DISPLAY_HOT:
+            context = {
+                'posts': Post.hot_posts()
+            }
+            result = render_to_string('config/blocks/sidebar_posts.html', context)
+        elif self.display_type == self.DISPLAY_COMMENT:
+            context = {
+                'comments': Comment.objects.filter(status=STATUS_NORMAL)
+            }
+            result = render_to_string('config/blocks/sidebar_comments.html', context)
+        return result

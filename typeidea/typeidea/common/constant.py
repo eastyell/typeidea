@@ -23,9 +23,13 @@ STATUS_ITEM_SIDE = (
     (STATUS_HIDE, '隐藏'),
 )
 
+DISPLAY_HTML = 1
+DISPLAY_LATEST = 2
+DISPLAY_HOT = 3
+DISPLAY_COMMENT = 4
 SIDE_TYPE = (
-    (1, 'HTML'),
-    (2, '最新文章'),
-    (3, '最热文章'),
-    (4, '最新评论'),
+    (DISPLAY_HTML, 'HTML'),
+    (DISPLAY_LATEST, '最新文章'),
+    (DISPLAY_HOT, '最热文章'),
+    (DISPLAY_COMMENT, '最新评论'),
 )

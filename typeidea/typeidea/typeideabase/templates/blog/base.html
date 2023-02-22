@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}首页{% endblock %}—晓宏随笔</title>
+</head>
+<body>
+<center><h2>欢迎来到“晓宏随笔”</h2></center>
+<div>
+    文章类型:
+    {% for cate in navs %}
+       <a href="/category/{{ cate.id }}/">{{ cate.name }}</a>
+    {% endfor %}
+</div>
+<hr/>
+{% block main %}
+
+{% endblock %}
+
+<hr/>
+<div>
+    非导航文章类型:
+    {% for cate in categories %}
+        <a href="/category/{{ cate.id }}">{{ cate.name }}</a>
+    {% endfor %}
+</div>
+
+<hr/>
+<div>
+{#    侧边栏展示:#}
+    {% for sidebar in sidebars %}
+        <h4>{{ sidebar.title }}</h4>
+        {{ sidebar.content_html }}
+    {% endfor %}
+</div>
+</body>
+</html>
