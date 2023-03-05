@@ -42,16 +42,18 @@ class TagView(IndexView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         tag_id = self.kwargs.get('tag_id')
-        tag = get_object_or_404(Tag, pk=tag_id)
+        # tag = get_object_or_404(Tag, pk=tag_id)
+        post_list, tag = Post.get_by_tag(tag_id)
         context.update({
             'tag': tag,
+            'post_list': post_list,
         })
         return context
 
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        tag_id = self.kwargs.get('tag_id')
-        return queryset.filter(tag_id=tag_id)
+    # def get_queryset(self):
+    #     queryset = super().get_queryset()
+    #     tag_id = self.kwargs.get('tag_id')
+    #     return queryset.filter(tag_id=tag_id)
 
 
 def post_list(request, category_id=None, tag_id=None):

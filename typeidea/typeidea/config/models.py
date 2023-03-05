@@ -1,7 +1,7 @@
 from django.template.loader import render_to_string
 from django.contrib.auth.models import User
 from django.db import models
-from typeidea.typeidea.common.constant import *
+from common.constant import *
 
 
 # Create your models here.

@@ -1,6 +1,6 @@
 from django.db import models
 from blog.models import Post
-from typeidea.typeidea.common.constant import *
+from common.constant import *
 
 
 # Create your models here.

@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
-from typeidea.typeidea.common.constant import *
+from common.constant import *
 
 
 # Create your models here.
@@ -55,7 +55,7 @@ class Post(models.Model):
     status = models.PositiveIntegerField(default=STATUS_NORMAL,
                                          choices=STATUS_ITEMS, verbose_name="状态")
     category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name="分类")
-    tag = models.ManyToManyField(Tag, verbose_name="标签")
+    tag = models.ManyToManyField(Tag, verbose_name="新标签")
     owner = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="作者")
     pv = models.PositiveIntegerField(default=1)  # 访问量
     uv = models.PositiveIntegerField(default=1)
