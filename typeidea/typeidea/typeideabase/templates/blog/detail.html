@@ -10,6 +10,12 @@
 {% block title %} {{ post.title }} {% endblock %} }
 
 {% block main %}
+    {% block extra_head %}
+     <link rel="stylesheet"
+        href="https://cdn.bootcss.com/highlight.js/9.12.0/styles/googlecode.min.css">
+        <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnload();</script>
+    {% endblock %}
 {% if post %}
     <h1>{{ post.title }}</h1>
         <div>
@@ -17,7 +23,10 @@
             <span>作者:{{ post.owner.username }}</span>
         </div>
     <hr/>
-    <p> {{ post.content }}</p>
+    {{ post.content }}
+    {% autoescape off %}
+    <p> markdown效果：{{ post.content_html }}</p>
+    {% endautoescape %}
 {% endif %}
     <hr/>
     {% comment_block request.path %}
