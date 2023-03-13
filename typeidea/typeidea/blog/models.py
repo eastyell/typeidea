@@ -1,6 +1,8 @@
 import mistune
 from django.contrib.auth.models import User
 from django.db import models
+from django.utils.functional import cached_property
+
 from common.constant import *
 
 
@@ -62,6 +64,10 @@ class Post(models.Model):
     pv = models.PositiveIntegerField(default=1)  # 访问量
     uv = models.PositiveIntegerField(default=1)
     create_time = models.DateTimeField(auto_now_add=True, verbose_name="创建时间")
+
+    @cached_property
+    def tags(self):
+        return ','.join(self.tag.values_list('name', flat=True))
 
     class Meta:
         verbose_name = verbose_name_plural = "1-文章"
