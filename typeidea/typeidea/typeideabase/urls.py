@@ -25,6 +25,7 @@ from config.views import LinkListView
 from comment.views import CommentView
 from blog.rss import LatestPostFeed
 from blog.sitemap import PostSitemap
+from autocomplete import CategoryAutocomplete, TagAutocomplete
 
 urlpatterns = [
     path('super_admin/', admin.site.urls, name='super-admin'),
@@ -43,5 +44,9 @@ urlpatterns = [
     re_path(r'^comment/$', CommentView.as_view(), name='comment'),
     re_path(r'^rss|feed/', LatestPostFeed(), name='rss'),
     re_path(r'^sitemap\.xml$', sitemap_views.sitemap, {'sitemaps': {'posts': PostSitemap}}),
+    re_path(r'^category-autocomplete/$', CategoryAutocomplete.as_view(),
+            name='category-autocomplete'),
+    re_path(r'^tag-autocomplete/$', TagAutocomplete.as_view(),
+            name='tag-autocomplete'),
 
 ]

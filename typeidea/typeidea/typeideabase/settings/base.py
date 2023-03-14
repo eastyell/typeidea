@@ -35,6 +35,8 @@ INSTALLED_APPS = [
     'blog',
     'config',
     'comment',
+    'dal',
+    'dal_select2',
 
     'django.contrib.admin',
     'django.contrib.auth',
