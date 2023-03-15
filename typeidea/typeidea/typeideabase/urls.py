@@ -16,10 +16,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, re_path
 from django.contrib.sitemaps import views as sitemap_views
+from django.conf import settings
+from django.conf.urls import include
+from django.conf.urls.static import static
 
 from .custom_site import custom_site
 from blog.views import post_list, post_detail
-from blog.views import PostDetailView, IndexView, TagView,\
+from blog.views import PostDetailView, IndexView, TagView, \
     CategoryView, SearchView, AuthorView
 from config.views import LinkListView
 from comment.views import CommentView
@@ -28,25 +31,26 @@ from blog.sitemap import PostSitemap
 from autocomplete import CategoryAutocomplete, TagAutocomplete
 
 urlpatterns = [
-    path('super_admin/', admin.site.urls, name='super-admin'),
-    path('admin/', custom_site.urls, name='admin'),
-    re_path(r'^$', IndexView.as_view(), name='index'),
-    # re_path(r'^$', post_list, name='index'),
-    # re_path(r'^category/(?P<category_id>\d+)/$', post_list, name='category-list'),
-    re_path(r'^category/(?P<category_id>\d+)/$', CategoryView.as_view(), name='category-list'),
-    # re_path(r'^tag/(?P<tag_id>\d+)/$', post_list, name='tag-list'),
-    re_path(r'^tag/(?P<tag_id>\d+)/$', TagView.as_view(), name='tag-list'),
-    # re_path(r'^post/(?P<post_id>\d+).html$', post_detail, name='post-detail'),
-    re_path(r'^post/(?P<pk>\d+).html$', PostDetailView.as_view(), name='post-detail'),
-    re_path(r'^links/$', LinkListView.as_view(), name='links'),
-    re_path(r'^search/', SearchView.as_view(), name='search'),
-    re_path(r'^author/(?P<owner_id>\d+)/$', AuthorView.as_view(), name='author'),
-    re_path(r'^comment/$', CommentView.as_view(), name='comment'),
-    re_path(r'^rss|feed/', LatestPostFeed(), name='rss'),
-    re_path(r'^sitemap\.xml$', sitemap_views.sitemap, {'sitemaps': {'posts': PostSitemap}}),
-    re_path(r'^category-autocomplete/$', CategoryAutocomplete.as_view(),
-            name='category-autocomplete'),
-    re_path(r'^tag-autocomplete/$', TagAutocomplete.as_view(),
-            name='tag-autocomplete'),
+                  path('super_admin/', admin.site.urls, name='super-admin'),
+                  path('admin/', custom_site.urls, name='admin'),
+                  re_path(r'^$', IndexView.as_view(), name='index'),
+                  # re_path(r'^$', post_list, name='index'),
+                  # re_path(r'^category/(?P<category_id>\d+)/$', post_list, name='category-list'),
+                  re_path(r'^category/(?P<category_id>\d+)/$', CategoryView.as_view(), name='category-list'),
+                  # re_path(r'^tag/(?P<tag_id>\d+)/$', post_list, name='tag-list'),
+                  re_path(r'^tag/(?P<tag_id>\d+)/$', TagView.as_view(), name='tag-list'),
+                  # re_path(r'^post/(?P<post_id>\d+).html$', post_detail, name='post-detail'),
+                  re_path(r'^post/(?P<pk>\d+).html$', PostDetailView.as_view(), name='post-detail'),
+                  re_path(r'^links/$', LinkListView.as_view(), name='links'),
+                  re_path(r'^search/', SearchView.as_view(), name='search'),
+                  re_path(r'^author/(?P<owner_id>\d+)/$', AuthorView.as_view(), name='author'),
+                  re_path(r'^comment/$', CommentView.as_view(), name='comment'),
+                  re_path(r'^rss|feed/', LatestPostFeed(), name='rss'),
+                  re_path(r'^sitemap\.xml$', sitemap_views.sitemap, {'sitemaps': {'posts': PostSitemap}}),
+                  re_path(r'^category-autocomplete/$', CategoryAutocomplete.as_view(),
+                          name='category-autocomplete'),  # 下拉框自动搜索
+                  re_path(r'^tag-autocomplete/$', TagAutocomplete.as_view(),
+                          name='tag-autocomplete'),  # 下拉框自动搜索
+                  re_path(r'^ckeditor/', include('ckeditor_uploader.urls')),
 
-]
+              ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

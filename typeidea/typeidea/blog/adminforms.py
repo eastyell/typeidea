@@ -1,5 +1,6 @@
 from dal import autocomplete
 from ckeditor.widgets import CKEditorWidget
+from ckeditor_uploader.widgets import CKEditorUploadingWidget
 from django import forms
 from .models import Category, Tag, Post
 
@@ -18,7 +19,8 @@ class PostAdminForm(forms.ModelForm):
     #     label='标签',
     # )
 
-    content = forms.CharField(widget=CKEditorWidget(), label='正文', required=True) # 富文本
+    # content = forms.CharField(widget=CKEditorWidget(), label='正文', required=True)  # 富文本
+    content = forms.CharField(widget=CKEditorUploadingWidget(), label='正文', required=True)  # 富文本
 
     class Meda:
         model = Post
