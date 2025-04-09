@@ -10,13 +10,16 @@ from typeideabase.base_admin import BaseOwnerAdmin
 
 
 # Register your models here.
+# 关联类别的文章信息
 class PostInline(admin.TabularInline):
     fields = ('title', 'desc')
-    extra = 1
+    extra = 0  # 是否默认新增几个空记录
     model = Post
 
 
+# 注册文章类别
 @admin.register(Category, site=custom_site)
+# 继承BaseOwnerAdmin，只能看到自己注册的类别
 class CategoryAdmin(BaseOwnerAdmin):
     inlines = (PostInline,)
     list_display = ('name', 'status', 'is_nav', 'post_count', 'owner', 'create_time')
@@ -49,6 +52,7 @@ class CategoryOwnerFilter(admin.SimpleListFilter):
         return queryset
 
 
+# 注册文章
 @admin.register(Post, site=custom_site)
 class PostAdmin(BaseOwnerAdmin):
     form = PostAdminForm
@@ -78,7 +82,7 @@ class PostAdmin(BaseOwnerAdmin):
         ('基础配置', {
             'description': '基础配置描述',
             'fields': (
-                ('title', 'category'),
+                ('title', 'category',),
                 'status',
             ),
         }),
@@ -126,12 +130,20 @@ class PostAdmin(BaseOwnerAdmin):
     #     return app_list
 
     class Media:
+        # 自定义静态样式
         css = {
             'all': ("https://cdn.bootcss.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css",),
         }
         js = ('https://cdn.bootcss.com/bootstrap/4.0.0-beta.2/js/bootstrap.bundle.js',)
 
 
+# 注册日志
 @admin.register(LogEntry, site=custom_site)
 class LogEntryAdmin(admin.ModelAdmin):
-    list_display = ['object_repr', 'object_id', 'action_flag', 'user', 'change_message', 'action_time']
+    list_display = ['object_repr', 'object_id', 'action_flag', 'user', 'change_message_bgk', 'action_time']
+    search_fields = ['object_id', 'change_message']
+
+    def change_message_bgk(self, obj):
+        return obj.change_message.encode().decode('unicode_escape')  # unicode转换为中文
+
+    change_message_bgk.short_description = '修改记录'

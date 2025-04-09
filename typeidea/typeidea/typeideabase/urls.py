@@ -21,7 +21,7 @@ from django.conf.urls import include
 from django.conf.urls.static import static
 
 from .custom_site import custom_site
-from blog.views import post_list, post_detail
+# from blog.views import post_list, post_detail
 from blog.views import PostDetailView, IndexView, TagView, \
     CategoryView, SearchView, AuthorView
 from config.views import LinkListView
@@ -31,9 +31,9 @@ from blog.sitemap import PostSitemap
 from autocomplete import CategoryAutocomplete, TagAutocomplete
 
 urlpatterns = [
-                  path('super_admin/', admin.site.urls, name='super-admin'),
-                  path('admin/', custom_site.urls, name='admin'),
-                  re_path(r'^$', IndexView.as_view(), name='index'),
+                  path('super_admin/', admin.site.urls, name='super-admin'),  # system users
+                  path('admin/', custom_site.urls, name='admin'),  # business users
+                  re_path(r'^$', IndexView.as_view(), name='index'),  # main webpage
                   # re_path(r'^$', post_list, name='index'),
                   # re_path(r'^category/(?P<category_id>\d+)/$', post_list, name='category-list'),
                   re_path(r'^category/(?P<category_id>\d+)/$', CategoryView.as_view(), name='category-list'),

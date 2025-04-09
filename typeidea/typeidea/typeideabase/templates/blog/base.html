@@ -5,43 +5,57 @@
 {% endblock %}
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}首页{% endblock %}—晓宏随笔</title>
+    <title>{% block title %}首页{% endblock %}—天下朝文</title>
+    <style>
+        .no-wrap {
+            white-space: nowrap;
+        }
+    </style>
 </head>
+
 <body>
-<center><h2>欢迎来到“晓宏随笔”</h2></center>
-<div>
-    文章类型:
+<center><h2>欢迎来到“天下朝文”</h2></center>
+<div style="text-align: right;">
+    <b>类别导航：</b>
     {% for cate in navs %}
-       <a href="/category/{{ cate.id }}/">{{ cate.name }}</a>
+       <a href="/category/{{ cate.id }}/">{{ cate.name }}</a>&ensp;
     {% endfor %}
 </div>
-<br/>
-<form class='form-inline' action='/search/' method=’GET‘>
-    <label>查询标题或摘要：</label>
+
+{% block search %}
+  <br/>
+  <form style="text-align: center;" class='form-inline' action='/search/' method=’GET‘>
+    <label>请输入标题或摘要：</label>
     <input class='form-control' type='search' name='keyword'
-           placeholder='请输入查询内容' aria-label='Search' value='{{ keyword }}'>
-    <button class='btn btn-outline-success' type='submit'>搜索</button>
-</form>
+           placeholder='请输入查询内容' aria-label='Search' value='{{ keyword }}'>&ensp;&ensp;
+    <button class='btn btn-outline-success' type='submit'>&ensp;查询&ensp;</button>
+  </form>
+{% endblock %}
+
 <hr/>
 {% block main %}
 
 {% endblock %}
-
 <hr/>
-<div>
-    非导航文章类型:
+
+{% if categories %}
+  <div>
+    <b>其他类别导航：</b>
+<!--    <li>-->
     {% for cate in categories %}
         <a href="/category/{{ cate.id }}">{{ cate.name }}</a>
     {% endfor %}
-</div>
+<!--    </li>-->
+  </div>
+{% endif %}
 
-<hr/>
 <div>
 {#    侧边栏展示:#}
     {% for sidebar in sidebars %}
-        <h4>{{ sidebar.title }}</h4>
+        <h4>{{ sidebar.title }}：</h4>
         {{ sidebar.content_html }}
     {% endfor %}
 </div>
+
 </body>
 </html>

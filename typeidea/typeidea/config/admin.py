@@ -15,8 +15,8 @@ class LinkAdmin(admin.ModelAdmin):
 
 @admin.register(SideBar)
 class SideAdmin(admin.ModelAdmin):
-    list_display = ('title', 'display_type', 'content', 'created_time')
-    fields = ('title', 'display_type', 'content')
+    list_display = ('title', 'display_type', 'status', 'content', 'created_time')
+    fields = ('title', 'display_type', 'status', 'content')
 
     def save_model(self, request, obj, form, change):
         obj.owner = request.user

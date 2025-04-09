@@ -6,6 +6,7 @@ from .models import Post
 from common.constant import *
 
 
+# 通过rss阅读器订阅网站信息
 class ExtendRSSFeed(Rss201rev2Feed):
     def add_item_elements(self, handler, item):
         super(ExtendRSSFeed, self).add_item_elements(handler, item)

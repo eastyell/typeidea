@@ -1,20 +1,20 @@
 {% extends "./base.html" %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <title>晓宏随笔文章列表</title>
 </head>
 <body>
-<div> 顶部分类:
-    {% for cate in navs %}
-        <a href="/category/{{ cate.id }}/">{{ cate.name }}</a>
-    {% endfor %}
-</div>
-<hr/>
-{% if tag %}
-    标签页:{{ tag.name }}
-{% endif %}
+{#<div> 顶部分类:#}
+{#    {% for cate in navs %}#}
+{#        <a href="/category/{{ cate.id }}/">{{ cate.name }}</a>#}
+{#    {% endfor %}#}
+{#</div>#}
+{#<hr/>#}
+{#{% if tag %}#}
+{#    标签页:{{ tag.name }}#}
+{#{% endif %}#}
 
 {% block title %}
     {% if tag %}
@@ -26,30 +26,30 @@
 {% endblock %}
 
 {% block main %}
-     {% if tag %}
-    标签页: {{ tag.name }}
+    {% if tag %}
+    <b>标签页：{{ tag.name }}</b>
     {% elif category %}
-    分页类: {{ category.name }}
+    <b>分页类：{{ category.name }} </b>
     {% endif %}
 <ul>
     {% for post in post_list %}
         <li>
-              <a href="{% url 'post-detail' post.id %}"> {{ post.title }} </a>
+              <a href="{% url 'post-detail' post.id %}"> {{ post.title }} </a><br/>
+              <p> 简述：{{ post.desc }}</p>
               <div>
-                  <span> 作者:{{ post.owner.username }} </span>
-                  <span> 分类:{{ post.category.name}} </span>
-              </div>
-              <p> {{ post.desc }}</p>
+                  <span> 作者：{{ post.owner.username }} </span><br/>
+                  <span> 类别：{{ post.category.name}} </span>
+              </div><br/>
         </li>
     {% endfor %}
     </ul>
     {% if page_obj %}
-          {% if paginator.has_previous %}
-             <a href="?page{{ page_obj.previous_page_number }}">上一页</a>
+          {% if page_obj.has_previous %}
+             &ensp;&ensp;<a href="?page{{ page_obj.previous_page_number }}">上一页</a>&ensp;
           {% endif %}
-          Page {{ page_obj.number }} of {{ paginator.num_pages }}
+          &ensp;Page {{ page_obj.number }} of {{ paginator.num_pages }}&ensp;
           {% if page_obj.has_next %}
-              <a href="?page={{ page_obj.next_page_number }}">下一页</a>
+              &ensp;<a href="?page={{ page_obj.next_page_number }}">下一页</a>&ensp;
           {% endif %}
    {% endif %}
 {% endblock %}
