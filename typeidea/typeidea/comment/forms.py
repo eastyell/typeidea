@@ -4,33 +4,35 @@ import mistune
 from .models import Comment
 
 
+# 回复表单验证
 class CommentForm(forms.ModelForm):
     nickname = forms.CharField(
-        label='昵称',
+        label='昵 称 ',
         max_length=50,
         widget=forms.widgets.Input(
-            attrs={'class': 'form-control', 'style': 'width: 5%;'}
+            attrs={'class': 'form-control', 'style': 'width: 10%;'}
         )
     )
     email = forms.CharField(
-        label='Email',
-        max_length=50,
+        label='Email ',
+        max_length=100,
         widget=forms.widgets.EmailInput(
             attrs={'class': 'form-control', 'style': 'width: 10%;'}
         )
     )
-    website = forms.CharField(
-        label='网站',
-        max_length=100,
-        widget=forms.widgets.URLInput(
-            attrs={'class': 'form-control', 'style': 'width: 10%;'}
-        )
-    )
+    # website = forms.CharField(
+    #     label='网 站 ',
+    #     # label_suffix='',
+    #     max_length=200,
+    #     widget=forms.widgets.URLInput(
+    #         attrs={'class': 'form-control', 'style': 'width: 10%;'}
+    #     )
+    # )
     content = forms.CharField(
-        label='内容',
-        max_length=500,
+        label='内 容 ',
+        max_length=2000,
         widget=forms.widgets.Textarea(
-            attrs={'rows': 6, 'cols': 60, 'class': 'form-control'}
+            attrs={'rows': 10, 'cols': 40, 'class': 'form-control'}
         )
     )
 
@@ -43,6 +45,6 @@ class CommentForm(forms.ModelForm):
 
     class Meta:
         model = Comment
-        fields = ['nickname', 'email', 'website', 'content']
+        fields = ['nickname', 'email', 'content']
 
 

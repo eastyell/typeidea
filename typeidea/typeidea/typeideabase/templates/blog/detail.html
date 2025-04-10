@@ -7,28 +7,32 @@
     <title>晓宏随笔文章明细</title>
 </head>
 <body>
-{% block title %} {{ post.title }} {% endblock %} }
-
+{% block search %} {% endblock %}
+{% block title %} {{ post.title }} {% endblock %}
 {% block main %}
+    {#配置代码高亮#}
     {% block extra_head %}
      <link rel="stylesheet"
         href="https://cdn.bootcss.com/highlight.js/9.12.0/styles/googlecode.min.css">
         <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
-        <script>hljs.initHighlightingOnload();</script>
+        <script>hljs.initHighlightingOnLoad();</script>
     {% endblock %}
-{% if post %}
-    <h1>{{ post.title }}</h1>
-        <div>
-            <span>分类:  {{ post.category.name }}</span>
-            <span>&emsp;作者: {{ post.owner.username }}</span>
-            <span>&emsp;访问量: {{ post.uv }}</span>
-        </div>
-    <hr/>
-    {{ post.content }}
-{#    {% autoescape off %}#}
-{#    <p> markdown效果：{{ post.content_html }}</p>#}
-{#    {% endautoescape %}#}
-{% endif %}
+    {% if post %}
+        <center>
+        <h3>{{ post.title }}</h3>
+            <div>
+                <span>分类:&ensp;{{ post.category.name }}</span>
+                <span>&emsp;作者:&ensp;{{ post.owner.username }}</span>
+                <span>&emsp;访问量:&ensp;{{ post.uv }}</span>
+                <span>&emsp;日期:&ensp;{{ post.create_time }}</span>
+            </div>
+        </center>
+        <hr/>
+        {% autoescape off %}
+        {{ post.content }}
+{#        <p> markdown效果：{{ post.content_html|safe }}</p>#}
+        {% endautoescape %}
+    {% endif %}
     <hr/>
     {% comment_block request.path %}
 {#    <div class="comment">#}
@@ -52,6 +56,7 @@
 {#          {% endfor %}#}
 {#      </ul>#}
 {#    </div>#}
+    <script>hljs.highlightAll();</script>
 {% endblock %}
 </body>
 </html>

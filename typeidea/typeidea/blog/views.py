@@ -11,39 +11,44 @@ from django.core.cache import cache
 
 
 # Create your views here.
+# 显示导航和侧边栏
 class CommonViewMixin:
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context.update({
-            'sidebars': SideBar.get_all(),
+            'sidebars': SideBar.get_all(),  # 获取正常状态的侧边栏记录
         })
-        context.update(Category.get_navs())
+        context.update(Category.get_navs())  # 获取是否导航类别的文章
         return context
 
 
+# 主页显示内容
 class IndexView(CommonViewMixin, ListView):
-    queryset = Post.latest_posts()
-    paginate_by = 5
+    queryset = Post.latest_posts()  # 获取文章
+    paginate_by = 5  # 每次显示5条记录
     context_object_name = 'post_list'
     template_name = 'blog/list.html'
 
 
+# 类别导航web地址路由
 class CategoryView(IndexView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         category_id = self.kwargs.get('category_id')
         category = get_object_or_404(Category, pk=category_id)
         context.update({
-            'category': category,
+            'category': category,  # 显示分页类
         })
         return context
 
+    # 过滤显示的文章
     def get_queryset(self):
         queryset = super().get_queryset()
         category_id = self.kwargs.get('category_id')
         return queryset.filter(category_id=category_id)
 
 
+# 标签导航web地址路由
 class TagView(IndexView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -62,7 +67,7 @@ class TagView(IndexView):
     #     return queryset.filter(tag_id=tag_id)
 
 
-def post_list(request, category_id=None, tag_id=None):
+def post_lists(request, category_id=None, tag_id=None):
     tag = None
     category = None
     if tag_id:
@@ -81,12 +86,13 @@ def post_list(request, category_id=None, tag_id=None):
     return render(request, 'blog/list.html', context=context)
 
 
+# 文章内容明细
 class PostDetailView(CommonViewMixin, DetailView):
     queryset = Post.latest_posts()
     template_name = 'blog/detail.html'
     context_object_name = 'post'
     pk_url_kwarg = 'pk'
-    ordering_fields = ('-create_time')  # 降序
+    ordering_fields = ('-create_time',)  # 降序
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -110,10 +116,10 @@ class PostDetailView(CommonViewMixin, DetailView):
         uv_key = 'uv:%s:%s:%s' % (uid, str(date.today()), self.request.path)  # 24小时有效
         if not cache.get(pv_key):
             increase_pv = True
-            cache.set(pv_key, 1, 1*60)
+            cache.set(pv_key, 1, 1 * 60)
         if not cache.get(uv_key):
             increase_uv = True
-            cache.set(uv_key, 1, 24*60*60)
+            cache.set(uv_key, 1, 24 * 60 * 60)
         if increase_pv and increase_uv:
             Post.objects.filter(pk=self.object.id).update(pv=F('pv') + 1, uv=F('uv') + 1)
         elif increase_pv:

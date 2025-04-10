@@ -65,7 +65,6 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'typeideabase.urls'
 
 TEMPLATES = [
-
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [],
@@ -131,13 +130,23 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
+# 配置页面静态资源的起始路径
 STATIC_URL = '/static/'
+
+# 部署后的静态资源路径
+STATIC_ROOT = ''
+
+# 静态资源所在目录
+STATICFILES_DIRS = []
 
 # CSRF_TRUSTED_ORIGINS = ['https://1rd32562.goho.co/']
 # CSRF_TRUSTED_ORIGINS = ['https://1rd32562.goho.co/']
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
+
+# 默认存储引擎
+DEFAULT_FILE_STORAGE = 'typeideabase.storage.WatermarkStorage'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 

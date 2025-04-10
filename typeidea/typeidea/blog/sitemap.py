@@ -5,6 +5,7 @@ from .models import Post
 from common.constant import *
 
 
+#  站点地图，提供搜索引擎
 class PostSitemap(Sitemap):
     changefred = 'always'
     priority = 1.0

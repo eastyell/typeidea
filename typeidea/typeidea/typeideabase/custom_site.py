@@ -2,8 +2,8 @@ from django.contrib.admin import AdminSite
 
 
 class CustomSite(AdminSite):
-    site_header = '晓宏随笔'
-    site_title = '晓宏随笔 管理后台'
+    site_header = '朝闻天下'
+    site_title = '朝闻天下 管理后台'
     index_title = '首页'
 
 

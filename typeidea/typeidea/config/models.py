@@ -5,6 +5,7 @@ from common.constant import *
 
 
 # Create your models here.
+# 友情链接
 class Link(models.Model):
     title = models.CharField(max_length=50, verbose_name="标题")
     href = models.URLField(verbose_name="链接")
@@ -20,6 +21,7 @@ class Link(models.Model):
         verbose_name = verbose_name_plural = "友链"
 
 
+# 侧边栏
 class SideBar(models.Model):
     title = models.CharField(max_length=50, verbose_name="标题")
     display_type = models.PositiveIntegerField(default=1, choices=SIDE_TYPE,
@@ -38,6 +40,7 @@ class SideBar(models.Model):
     def get_all(cls):
         return cls.objects.filter(status=STATUS_SHOW)
 
+    # 侧边栏显示的栏目内容
     @property
     def content_html(self):
         from blog.models import Post
@@ -45,17 +48,17 @@ class SideBar(models.Model):
         result = ''
         if self.display_type == DISPLAY_HTML:
             result = self.content
-        elif self.display_type == DISPLAY_LATEST:
+        elif self.display_type == DISPLAY_LATEST:  # 最近发表的文章
             context = {
                 'posts': Post.latest_posts()
             }
             result = render_to_string('config/blocks/sidebar_posts.html', context)
-        elif self.display_type == self.DISPLAY_HOT:
+        elif self.display_type == DISPLAY_HOT:  # 热度最高的文章
             context = {
                 'posts': Post.hot_posts()
             }
             result = render_to_string('config/blocks/sidebar_posts.html', context)
-        elif self.display_type == self.DISPLAY_COMMENT:
+        elif self.display_type == DISPLAY_COMMENT:  # 最新评论
             context = {
                 'comments': Comment.objects.filter(status=STATUS_NORMAL)
             }

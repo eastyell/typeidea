@@ -7,6 +7,7 @@ from common.constant import *
 
 
 # Create your models here.
+# 文章类别
 class Category(models.Model):
     name = models.CharField(max_length=50, verbose_name="名称")
     status = models.PositiveIntegerField(default=STATUS_NORMAL,
@@ -24,8 +25,8 @@ class Category(models.Model):
     @classmethod
     def get_navs(cls):
         categories = cls.objects.filter(status=STATUS_NORMAL)
-        nav_categories = []
-        normal_categories = []
+        nav_categories = []  # 导航
+        normal_categories = []  # 非导航
         for cate in categories:
             if cate.is_nav:
                 nav_categories.append(cate)
@@ -37,6 +38,7 @@ class Category(models.Model):
         }
 
 
+# 文章的标签
 class Tag(models.Model):
     name = models.CharField(max_length=10, verbose_name="名称")
     status = models.PositiveIntegerField(default=STATUS_NORMAL,
@@ -51,6 +53,7 @@ class Tag(models.Model):
         return self.name
 
 
+# 发表的文章
 class Post(models.Model):
     title = models.CharField(max_length=255, verbose_name="标题")
     desc = models.CharField(max_length=1024, blank=True, verbose_name="摘要")
@@ -65,6 +68,7 @@ class Post(models.Model):
     uv = models.PositiveIntegerField(default=1)
     create_time = models.DateTimeField(auto_now_add=True, verbose_name="创建时间")
 
+    # 配置sitemap 返回的数据绑到实例上
     @cached_property
     def tags(self):
         return ','.join(self.tag.values_list('name', flat=True))
@@ -77,9 +81,10 @@ class Post(models.Model):
         return self.title
 
     def save(self, *args, **kwargs):
-        self.content_html = mistune.markdown(self.content)
+        self.content_html = mistune.markdown(self.content)  # 保存富文本
         super().save(*args, **kwargs)
 
+    # 获取对应标签
     @staticmethod
     def get_by_tag(tag_id):
         try:
@@ -92,6 +97,7 @@ class Post(models.Model):
                 .select_related('owner', 'category')
         return post_list, tag
 
+    # 获取对应类别
     @staticmethod
     def get_by_category(category_id):
         try:
@@ -104,15 +110,17 @@ class Post(models.Model):
                 .select_related('owner', 'category')
         return post_list, category
 
+    # 获取最新文章
     @classmethod
     def latest_posts(cls):
-        queryset = cls.objects.filter(status=STATUS_NORMAL)
+        queryset = cls.objects.filter(status=STATUS_NORMAL).order_by('-create_time')
         return queryset
 
+    # 获取热点文章
     @classmethod
     def hot_posts(cls):
-        return cls.objects.filter(status=STATUS_NORMAL).order_by('-pv')
-
+        queryset = cls.objects.filter(status=STATUS_NORMAL).order_by('-uv')
+        return queryset
 
 
 

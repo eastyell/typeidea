@@ -1,16 +1,19 @@
-    <label>回复评论：</label>
+  <center>
+    <h3>新闻评论</h3>
     <p>
      <div class="comment">
       <form class="form-group" action="/comment/" method="POST">
           {% csrf_token %}
           <input name="target" type="hidden" value="{{ target }}">
-          {{ comment_form }}
+            {{ comment_form.as_p }}
           <p>
-          &emsp;&emsp;<input type="submit" value="提交评论"/>
+          &emsp;&emsp;<input type="submit" value="&emsp;提交评论&emsp;"/>
       </form>
-      <hr/>
-      <lable>最新回复:</lable>
-      <ul class="list-group">
+     </div>
+  </center>
+    <hr/>
+    <h3>最新回复</h3>
+    <ul class="list-group">
           {% for comment in comment_list %}
           <li class="list-group-item">
               <div class="comment-content">
@@ -19,10 +22,9 @@
                   {% endautoescape %}
               </div>
               <div class="nickname">
-                  <a href="{{ comment.website }}">{{ comment.nickname }}</a>
-                  <span>&emsp;&emsp;{{ comment.create_time }}</span>
+                  <a href="mailto:{{ comment.email }}">{{ comment.nickname }}</a>
+                  <span>&emsp;{{ comment.create_time }}</span>
               </div>
           </li>
           {% endfor %}
-      </ul>
-    </div>
+    </ul>
