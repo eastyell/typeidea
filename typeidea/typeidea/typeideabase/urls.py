@@ -19,6 +19,8 @@ from django.contrib.sitemaps import views as sitemap_views
 from django.conf import settings
 from django.conf.urls import include
 from django.conf.urls.static import static
+from rest_framework.routers import DefaultRouter
+from rest_framework.documentation import include_docs_urls
 
 from .custom_site import custom_site
 # from blog.views import post_list, post_detail
@@ -29,7 +31,12 @@ from comment.views import CommentView
 from blog.rss import LatestPostFeed
 from blog.sitemap import PostSitemap
 from autocomplete import CategoryAutocomplete, TagAutocomplete
+from blog.apis import post_list, PostList, PostViewSet, CategoryViewSet
 
+
+router = DefaultRouter()
+router.register(r'post', PostViewSet, basename='api-post')
+router.register(r'category', CategoryViewSet, basename='api-category')
 urlpatterns = [
                   path('super_admin/', admin.site.urls, name='super-admin'),  # system users
                   path('admin/', custom_site.urls, name='admin'),  # business users
@@ -51,6 +58,12 @@ urlpatterns = [
                           name='category-autocomplete'),  # 下拉框自动搜索
                   re_path(r'^tag-autocomplete/$', TagAutocomplete.as_view(),
                           name='tag-autocomplete'),  # 下拉框自动搜索
-                  re_path(r'^ckeditor/', include('ckeditor_uploader.urls')),
+                  re_path(r'^ckeditor/', include('ckeditor_uploader.urls')),  # 图片上传
+                  # re_path(r'^api/post/', post_list, name='post-list'),
+                  # re_path(r'^api/post/', PostList.as_view(), name='post-list'),
+                  re_path(r'^api/', include((router.urls, 'api'), namespace='api')),  # rest_framework
+                  # path('docs/', include_docs_urls(title='My API title')),
+                  re_path(r'^api/docs/', include_docs_urls(title='typeidea apis')),  # rest_framework doc
+
 
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
