@@ -1,1 +1,1 @@
-# This is a  web project  with the frame of Django.
+# This is a news publish project with the frame of Django.
