@@ -112,8 +112,11 @@ class Post(models.Model):
 
     # 获取最新文章
     @classmethod
-    def latest_posts(cls):
+    def latest_posts(cls, with_related=True):
         queryset = cls.objects.filter(status=STATUS_NORMAL).order_by('-create_time')
+        # 是否需要获取两个外键信息
+        if with_related:
+            queryset = queryset.select_related('owner', 'category')
         return queryset
 
     # 获取热点文章

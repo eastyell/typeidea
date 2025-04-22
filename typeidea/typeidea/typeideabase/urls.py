@@ -67,3 +67,10 @@ urlpatterns = [
 
 
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+# 调试优化
+if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns += [re_path(r'^debug/', include(debug_toolbar.urls)), ]
+
+

@@ -153,6 +153,8 @@ class SearchView(IndexView):
     def get_queryset(self):
         queryset = super().get_queryset()
         keyword = self.request.GET.get('keyword')
+        # import pdb;
+        # pdb.set_trace()  # 用于调试追踪
         if not keyword:
             return queryset
         return queryset.filter(Q(title__icontains=keyword) | Q(desc__icontains=keyword))

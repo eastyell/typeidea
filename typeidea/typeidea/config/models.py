@@ -50,7 +50,7 @@ class SideBar(models.Model):
             result = self.content
         elif self.display_type == DISPLAY_LATEST:  # 最近发表的文章
             context = {
-                'posts': Post.latest_posts()
+                'posts': Post.latest_posts(with_related=False)  # 侧边栏不需要
             }
             result = render_to_string('config/blocks/sidebar_posts.html', context)
         elif self.display_type == DISPLAY_HOT:  # 热度最高的文章
